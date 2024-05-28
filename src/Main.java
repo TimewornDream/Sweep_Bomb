@@ -1,7 +1,6 @@
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -14,7 +13,7 @@ import javafx.stage.Stage;
 public class Main extends Application {
     public void start(Stage primaryStage) {
         BorderPane root = new BorderPane();
-        Scene scene = new Scene(root,900,480);
+        Scene scene = new Scene(root,393,852);
         root.setStyle(
                 "-fx-background-color: #FFFFFF"
         );
@@ -22,7 +21,7 @@ public class Main extends Application {
 
         // 上面的文本
         Text text = new Text("扫雷——拙略的模仿");
-        text.setFont(Font.font("楷体", FontWeight.BOLD, 22));
+        text.setFont(Font.font("KaiTi_GB2312", FontWeight.BOLD, 22));
         text.setFill(Paint.valueOf("#3155ED"));
 
         HBox top = new HBox();
@@ -33,14 +32,18 @@ public class Main extends Application {
         );
 
         // 中间三个按钮
-        Button button1 = new Button("初级");
-        Button button2 = new Button("中级");
-        Button button3 = new Button("高级");
+        MainButton junButton = new MainButton("初级", 240, 240);
+        MainButton midButton = new MainButton("中级", 480, 480);
+        MainButton senButton = new MainButton("高级", 900, 480);
+
+        junButton.initStyle();
+        midButton.initStyle();
+        senButton.initStyle();
 
         VBox center = new VBox();
-        center.prefWidthProperty().bind(scene.widthProperty().multiply(1));
-        center.getChildren().addAll(button1, button2, button3);
+        center.getChildren().addAll(junButton, midButton, senButton);
         center.setAlignment(Pos.CENTER);
+        center.setSpacing(20);
 
         // 添加各部分
         root.setTop(top);
