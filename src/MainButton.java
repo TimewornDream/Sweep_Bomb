@@ -11,6 +11,7 @@ public class MainButton extends Button {
         this.mapWidth = mapWidth;
         this.setOnAction(e -> {
             GameWindow gameWindow = new GameWindow(this.getText());
+            gameWindow.setResizable(false);
             gameWindow.show();
             Stage mainWindow = (Stage) this.getScene().getWindow();
             mainWindow.close();
