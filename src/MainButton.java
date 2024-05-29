@@ -1,7 +1,7 @@
 import javafx.scene.control.Button;
+import javafx.stage.Stage;
 
 public class MainButton extends Button {
-    //
     private Integer mapWidth;
     private Integer mapHeight;
 
@@ -9,6 +9,12 @@ public class MainButton extends Button {
         super(content);
         this.mapHeight = mapHeight;
         this.mapWidth = mapWidth;
+        this.setOnAction(e -> {
+            GameWindow gameWindow = new GameWindow("初级");
+            gameWindow.show();
+            Stage mainWindow = (Stage) this.getScene().getWindow();
+            mainWindow.close();
+        });
     }
 
     public Integer getMapHeight() {
