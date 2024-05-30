@@ -1,8 +1,6 @@
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
-;
-
 public class GameBlock extends Rectangle {
     GameBlock(){
         super(39, 39);

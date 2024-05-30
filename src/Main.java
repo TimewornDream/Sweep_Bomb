@@ -1,8 +1,9 @@
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
@@ -26,26 +27,33 @@ public class Main extends Application {
         text.setFont(Font.font("KaiTi_GB2312", FontWeight.BOLD, 22));
         text.setFill(Paint.valueOf("#3155ED"));
 
-        HBox top = new HBox();
-        top.getChildren().add(text);
+        VBox top = new VBox();
+
+        // 图片
+        Image img = new Image("./img/main_background.png");
+        ImageView imageView = new ImageView(img);
+        imageView.setFitHeight(230);
+        imageView.setFitWidth(310);
+
+        top.getChildren().addAll(text, imageView);
         top.setAlignment(Pos.CENTER);
-        top.setStyle(
-                "-fx-padding: 10px"
-        );
+        top.setTranslateY(30);
+        top.setMaxHeight(300);
+        top.setSpacing(10);
 
         // 中间三个圆
         StackPane center = new StackPane();
         Circle circle1 = new Circle(319);
         circle1.setFill(Paint.valueOf("#F2F3F5"));
-        circle1.setTranslateY(180);
+        circle1.setTranslateY(80);
 
         Circle circle2 = new Circle(319);
         circle2.setFill(Paint.valueOf("#E8EAED"));
-        circle2.setTranslateY(240);
+        circle2.setTranslateY(140);
 
         Circle circle3 = new Circle(319);
         circle3.setFill(Paint.valueOf("#0F1F41"));
-        circle3.setTranslateY(300);
+        circle3.setTranslateY(200);
 
         // 中间三个按钮
         MainButton junButton = new MainButton("初级", 240, 240);
@@ -60,9 +68,10 @@ public class Main extends Application {
         buttons.getChildren().addAll(junButton, midButton, senButton);
         buttons.setAlignment(Pos.CENTER);
         buttons.setSpacing(20);
-        buttons.setTranslateY(150);
+        buttons.setTranslateY(50);
 
         center.getChildren().addAll(circle1, circle2, circle3, buttons);
+        center.setAlignment(Pos.TOP_CENTER);
 
         // 添加各部分
         root.setTop(top);

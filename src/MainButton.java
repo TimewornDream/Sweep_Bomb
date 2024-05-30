@@ -45,4 +45,17 @@ public class MainButton extends Button {
                         "-fx-font-family: 'KaiTi_GB2312'"
         );
     }
+    public void initExitStyle() {
+        this.setStyle(
+                "-fx-background-radius: 40;" +
+                        "-fx-background-color: #3155ED;" +
+                        "-fx-min-width: 132;" +
+                        "-fx-min-height: 47;" +
+                        "-fx-font-size: 16;" +
+                        "-fx-text-fill: #FFFFFF;" +
+                        "-fx-font-family: 'KaiTi_GB2312'"
+        );
+    }
+
+
 }
