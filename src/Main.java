@@ -55,20 +55,22 @@ public class Main extends Application {
         circle3.setFill(Paint.valueOf("#0F1F41"));
         circle3.setTranslateY(200);
 
-        // 中间三个按钮
+        // 中间四个个按钮
         MainButton junButton = new MainButton("初级", 240, 240);
         MainButton midButton = new MainButton("中级", 480, 480);
         MainButton senButton = new MainButton("高级", 900, 480);
+        MainButton exitButton = new MainButton("退出");
 
         junButton.initStyle();
         midButton.initStyle();
         senButton.initStyle();
+        exitButton.initExitStyle();
 
         VBox buttons = new VBox();
-        buttons.getChildren().addAll(junButton, midButton, senButton);
+        buttons.getChildren().addAll(junButton, midButton, senButton, exitButton);
         buttons.setAlignment(Pos.CENTER);
         buttons.setSpacing(20);
-        buttons.setTranslateY(50);
+        buttons.setTranslateY(90);
 
         center.getChildren().addAll(circle1, circle2, circle3, buttons);
         center.setAlignment(Pos.TOP_CENTER);
@@ -79,6 +81,9 @@ public class Main extends Application {
         root.setMinWidth(scene.getWidth());
         root.setMinHeight(scene.getHeight());
 
+        Image icon = new Image("./img/bomb.png");
+
+        primaryStage.getIcons().add(icon);
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
         primaryStage.show();
