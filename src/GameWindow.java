@@ -6,6 +6,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class GameWindow extends Stage {
+    private int mapWidth;
+    private int mapHeight;
     public GameWindow(String difficulty) {
         VBox gameRoot = new VBox();
 
@@ -17,37 +19,31 @@ public class GameWindow extends Stage {
         );
 
         FlowPane center = new FlowPane();
-        GameBlock[][] blocks = new GameBlock[1][1];
 
         center.setStyle(
                 "-fx-background-color: #000000"
         );
 
-
-        int width = 0, height = 0;
         switch (difficulty){
             case "初级":
-                width = calculateWidth(8);
-                height = calculateHeight(8);
-                center.setMaxWidth(320);
-                center.setMinHeight(320);
-                blocks = new GameBlock[8][8];
+                mapWidth = 8;
+                mapHeight = 8;
                 break;
             case "中级":
-                width = calculateWidth(16);
-                height = calculateHeight(16);
-                center.setMaxWidth(640);
-                center.setMinHeight(640);
-                blocks = new GameBlock[16][16];
+                mapWidth = 16;
+                mapHeight =16;
                 break;
             case "高级":
-                width = calculateWidth(30);
-                height = calculateHeight(16);
-                center.setMaxWidth(1200);
-                center.setMinHeight(640);
-                blocks = new GameBlock[30][16];
+                mapWidth = 30;
+                mapHeight = 30;
                 break;
         }
+        int width = calculateWidth(mapWidth);
+        int height = calculateHeight(mapHeight);
+        center.setMaxWidth(mapWidth * GameBlock.edgeLength);
+        center.setMinHeight(mapWidth * GameBlock.edgeLength);
+        GameBlock[][] blocks = new GameBlock[mapWidth][mapHeight];
+
         for (int i = 0; i < blocks.length; i++) {
             for (int j = 0; j < blocks[i].length; j++) {
                 GameBlock block = new GameBlock(); // 创建GameBlock对象

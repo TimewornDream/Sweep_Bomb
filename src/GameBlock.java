@@ -3,27 +3,28 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.layout.StackPane;
 
 public class GameBlock extends StackPane {
+    public static int edgeLength = 40;
     private int status = 0;
     private boolean isPress = false;
     GameBlock(){
         super();
-        this.setMaxSize(40, 40);
+        this.setMaxSize(edgeLength, edgeLength);
 
         ImageView block = new ImageView("./img/block.png");
-        block.setFitWidth(40);
-        block.setFitHeight(40);
+        block.setFitWidth(edgeLength);
+        block.setFitHeight(edgeLength);
         ImageView flag = new ImageView("./img/block_flag.png");
-        flag.setFitWidth(40);
-        flag.setFitHeight(40);
+        flag.setFitWidth(edgeLength);
+        flag.setFitHeight(edgeLength);
         ImageView doubt = new ImageView("./img/block_doubt.png");
-        doubt.setFitWidth(40);
-        doubt.setFitHeight(40);
+        doubt.setFitWidth(edgeLength);
+        doubt.setFitHeight(edgeLength);
         ImageView press = new ImageView("./img/press_block.png");
-        press.setFitWidth(40);
-        press.setFitHeight(40);
+        press.setFitWidth(edgeLength);
+        press.setFitHeight(edgeLength);
         ImageView empty = new ImageView("./img/empty_block.png");
-        empty.setFitHeight(40);
-        empty.setFitWidth(40);
+        empty.setFitHeight(edgeLength);
+        empty.setFitWidth(edgeLength);
 
         this.getChildren().add(block);
 
