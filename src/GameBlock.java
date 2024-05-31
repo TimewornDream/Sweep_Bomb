@@ -12,26 +12,53 @@ public class GameBlock extends StackPane {
         ImageView block = new ImageView("./img/block.png");
         block.setFitWidth(40);
         block.setFitHeight(40);
-        ImageView cursor = new ImageView("./img/cursor_block.png");
-        cursor.setFitWidth(40);
-        cursor.setFitHeight(40);
+        ImageView flag = new ImageView("./img/block_flag.png");
+        flag.setFitWidth(40);
+        flag.setFitHeight(40);
+        ImageView doubt = new ImageView("./img/block_doubt.png");
+        doubt.setFitWidth(40);
+        doubt.setFitHeight(40);
+        ImageView press = new ImageView("./img/press_block.png");
+        press.setFitWidth(40);
+        press.setFitHeight(40);
         ImageView empty = new ImageView("./img/empty_block.png");
         empty.setFitHeight(40);
         empty.setFitWidth(40);
 
         this.getChildren().add(block);
 
+        // block 右键变换图像
+        this.setOnMouseClicked(e -> {
+            if (e.getButton() == MouseButton.SECONDARY && !isPress) {
+                this.getChildren().clear();
+                switch (status) {
+                    case 0:
+                        this.getChildren().add(flag);
+                        status = 1;
+                        break;
+                    case 1:
+                        this.getChildren().add(doubt);
+                        status = 2;
+                        break;
+                    case 2:
+                        this.getChildren().add(block);
+                        status = 0;
+                        break;
+                }
+                this.getChildren().get(0).setOpacity(0.8);
+            }
+        });
 
-        // block 悬停变换图像
+        // block 悬停变换透明度
         this.setOnMouseEntered(e -> {
-            if (status == 0) {
-                block.setOpacity(0.8); // 将透明度设置为70%来实现变暗效果
+            if (!isPress) {
+                this.getChildren().get(0).setOpacity(0.8);
             }
         });
 
         this.setOnMouseExited(e -> {
-            if (status == 0) {
-                block.setOpacity(1.8); // 恢复透明度
+            if (!isPress) {
+                this.getChildren().get(0).setOpacity(1.8);
             }
         });
 
@@ -39,7 +66,7 @@ public class GameBlock extends StackPane {
         this.setOnMousePressed( e->{
             if(status == 0 && !isPress && e.getButton() == MouseButton.PRIMARY) {
                 this.getChildren().clear();
-                this.getChildren().add(cursor);
+                this.getChildren().add(press);
                 isPress = true;
             }
         });
