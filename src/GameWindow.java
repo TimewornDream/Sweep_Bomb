@@ -33,7 +33,7 @@ public class GameWindow extends Stage {
             case "初级":
                 mapWidth = 8;
                 mapHeight = 8;
-                numOfBomb = 10;
+                numOfBomb = 55;
                 break;
             case "中级":
                 mapWidth = 16;
@@ -50,17 +50,27 @@ public class GameWindow extends Stage {
         int height = calculateHeight(mapHeight);
         center.setMaxWidth(mapWidth * GameBlock.edgeLength);
         center.setMinHeight(mapWidth * GameBlock.edgeLength);
-        GameBlock[][] blocks = new GameBlock[mapWidth][mapHeight];
+        GameBlock[][] blocks = new GameBlock[mapHeight + 2][mapWidth + 2];
 
         for (int i = 0; i < blocks.length; i++) {
             for (int j = 0; j < blocks[i].length; j++) {
                 GameBlock block = new GameBlock(); // 创建GameBlock对象
                 blocks[i][j] = block; // 将GameBlock对象添加到blocks数组
-                center.getChildren().add(block);
+                if(i >= 1 && i <= mapHeight && j >= 1 && j <= mapWidth) {
+                    center.getChildren().add(block);
+                }
             }
         }
 
         initMap(blocks);
+
+        for (int i = 1; i <= mapHeight; i++) {
+            for (int j = 1; j <= mapWidth; j++) {
+                blocks[i][j].unfold();
+                System.out.printf("%d", blocks[i][j].getType());
+            }
+            System.out.println();
+        }
 
         gameRoot.setAlignment(Pos.TOP_CENTER);
         gameRoot.getChildren().addAll(top, center);
@@ -90,26 +100,16 @@ public class GameWindow extends Stage {
 
         // 将地雷位置设置为地雷
         for (int index : bombIndexes) {
-            int x = index % mapWidth;
-            int y = index / mapWidth;
+            int x = index / mapWidth + 1;
+            int y = index % mapWidth + 1;
             blocks[x][y].setType(9); // 9 表示地雷
-        }
-
-        // 设置周围数字
-        for (int i = 0; i < mapWidth; i++) {
-            for (int j = 0; j < mapHeight; j++) {
-                if (blocks[i][j].getType() != 9) { // 不是地雷的方块
-                    int count = 0;
-                    for (int dx = -1; dx <= 1; dx++) {
-                        for (int dy = -1; dy <= 1; dy++) {
-                            int newX = i + dx;
-                            int newY = j + dy;
-                            if (newX >= 0 && newX < mapWidth && newY >= 0 && newY < mapHeight && blocks[newX][newY].getType() == 9) {
-                                count++;
-                            }
-                        }
+            for (int dx = -1; dx <= 1; dx++) {
+                for (int dy = -1; dy <= 1; dy++) {
+                    int newX = x + dx;
+                    int newY = y + dy;
+                    if (blocks[newX][newY].getType() != 9) {
+                        blocks[newX][newY].setType(blocks[newX][newY].getType() + 1);
                     }
-                    blocks[i][j].setType(count); // 设置周围地雷数量
                 }
             }
         }

@@ -112,4 +112,10 @@ public class GameBlock extends StackPane {
         imageView.setFitHeight(edgeLength);
         return imageView;
     }
+
+    public void unfold(){
+        this.getChildren().clear();
+        this.getChildren().add(this.getImageWithType());
+        isPress = true;
+    }
 }
