@@ -55,7 +55,7 @@ public class GameBlock extends StackPane {
         // block 悬停变换透明度
         this.setOnMouseEntered(e -> {
             if (!isPress) {
-                this.getChildren().get(0).setOpacity(0.8);
+                this.getChildren().get(0).setOpacity(0.6);
             }
         });
 
@@ -74,6 +74,10 @@ public class GameBlock extends StackPane {
                 this.getChildren().clear();
                 this.getChildren().add(press);
                 isPress = true;
+            } else if (status != 0 && !isPress && e.getButton() == MouseButton.PRIMARY) {
+                status = 0;
+                this.getChildren().clear();
+                this.getChildren().add(block);
             }
         });
 
