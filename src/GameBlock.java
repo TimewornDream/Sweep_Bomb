@@ -38,10 +38,23 @@ public class GameBlock extends StackPane {
                     case 0:
                         this.getChildren().add(flag);
                         status = 1;
+
+                        // 计数器数据域改变
+                        Counter.userRemainingBomb--;
+                        if (this.type == 9) {
+                            Counter.numOfRemainingBomb--;
+                        }
+
                         break;
                     case 1:
                         this.getChildren().add(doubt);
                         status = 2;
+
+                        // 计数器数据域改变
+                        Counter.userRemainingBomb++;
+                        if (this.type == 9) {
+                            Counter.numOfRemainingBomb++;
+                        }
                         break;
                     case 2:
                         this.getChildren().add(block);
@@ -75,6 +88,13 @@ public class GameBlock extends StackPane {
                 this.getChildren().add(press);
                 isPress = true;
             } else if (status != 0 && !isPress && e.getButton() == MouseButton.PRIMARY) {
+                if (status == 1) {
+                    // 计数器数据域改变
+                    Counter.userRemainingBomb++;
+                    if (this.type == 9) {
+                        Counter.numOfRemainingBomb++;
+                    }
+                }
                 status = 0;
                 this.getChildren().clear();
                 this.getChildren().add(block);

@@ -58,12 +58,19 @@ public class GameWindow extends Stage {
         topBox.setMaxHeight(80+4*2);
         topBox.setMaxWidth((mapWidth+2) * GameBlock.edgeLength);
 
-
+        // 计时器
         Timer timer = new Timer();
         topBox.getChildren().addAll(timer);
+
+
+        // 计数器
+        Counter counter = new Counter(numOfBomb);
+        topBox.getChildren().addAll(counter);
+
         topBox.setAlignment(Pos.CENTER);
         top.setCenter(topBox);
 
+        // 中间部分
         FlowPane center = new FlowPane();
 
         center.setStyle(
@@ -87,8 +94,13 @@ public class GameWindow extends Stage {
                     }
                 }
             }
+            counter.updateImage();
         });
 
+        // 如果有 block 被点击，更新计数器
+        center.setOnMouseClicked(e-> counter.updateImage());
+
+        // 初始化地图大小
         int width = calculateWidth(mapWidth);
         int height = calculateHeight(mapHeight);
         center.setMaxWidth(mapWidth * GameBlock.edgeLength + 6);
@@ -105,6 +117,7 @@ public class GameWindow extends Stage {
             }
         }
 
+        // 将组件添加到根节点
         gameRoot.setAlignment(Pos.TOP_CENTER);
         gameRoot.getChildren().addAll(top, center);
         gameRoot.setStyle(

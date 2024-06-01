@@ -16,8 +16,6 @@ public class Timer extends HBox {
             this.updateTime();
             this.getChildren().clear();
             this.getChildren().addAll(getImageByType(1), getImageByType(2), getImageByType(3));
-            System.out.println(second);
-            System.out.println(second/10 - second/100);
         }));
         clock.setCycleCount(Timeline.INDEFINITE);
 
