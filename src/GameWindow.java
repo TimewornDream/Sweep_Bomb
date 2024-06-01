@@ -20,20 +20,22 @@ public class GameWindow extends Stage {
         top.setMaxHeight(120);
         top.setMinHeight(120);
         top.setStyle(
-                "-fx-background-color: #323232"
+                "-fx-background-color: #c9d0ed"
         );
 
         FlowPane center = new FlowPane();
 
         center.setStyle(
-                "-fx-background-color: #000000"
+                "-fx-background-color: #c9d0ed;" +
+                        "-fx-border-width: 3;" +
+                        "-fx-border-color: #2851f9"
         );
 
         switch (difficulty){
             case "初级":
                 mapWidth = 8;
                 mapHeight = 8;
-                numOfBomb = 55;
+                numOfBomb = 10;
                 break;
             case "中级":
                 mapWidth = 16;
@@ -48,8 +50,8 @@ public class GameWindow extends Stage {
         }
         int width = calculateWidth(mapWidth);
         int height = calculateHeight(mapHeight);
-        center.setMaxWidth(mapWidth * GameBlock.edgeLength);
-        center.setMinHeight(mapWidth * GameBlock.edgeLength);
+        center.setMaxWidth(mapWidth * GameBlock.edgeLength + 6);
+        center.setMinHeight(mapWidth * GameBlock.edgeLength + 6);
         GameBlock[][] blocks = new GameBlock[mapHeight + 2][mapWidth + 2];
 
         for (int i = 0; i < blocks.length; i++) {
@@ -64,27 +66,22 @@ public class GameWindow extends Stage {
 
         initMap(blocks);
 
-        for (int i = 1; i <= mapHeight; i++) {
-            for (int j = 1; j <= mapWidth; j++) {
-                blocks[i][j].unfold();
-                System.out.printf("%d", blocks[i][j].getType());
-            }
-            System.out.println();
-        }
-
         gameRoot.setAlignment(Pos.TOP_CENTER);
         gameRoot.getChildren().addAll(top, center);
+        gameRoot.setStyle(
+                "-fx-background-color: #c9d0ed;"
+        );
 
         Scene gameScene = new Scene(gameRoot, width, height);
         this.setScene(gameScene);
     }
 
     private static int calculateWidth (int width) {
-        return 40*width+80;
+        return GameBlock.edgeLength*(width+4);
     }
 
     private static int calculateHeight (int height) {
-        return 40*height+160;
+        return GameBlock.edgeLength*(height+5);
     }
     public void initMap(GameBlock[][] blocks){
         Random random = new Random();
