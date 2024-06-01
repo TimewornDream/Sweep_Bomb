@@ -10,18 +10,24 @@ import java.util.List;
 import java.util.Random;
 
 public class GameWindow extends Stage {
+    private boolean isInit = false;
     private int numOfBomb;
     private int mapWidth;
     private int mapHeight;
+    private static GameBlock[][] blocks;
     public GameWindow(String difficulty) {
         VBox gameRoot = new VBox();
 
+        // 顶部
         BorderPane top = new BorderPane();
         top.setMaxHeight(120);
         top.setMinHeight(120);
         top.setStyle(
                 "-fx-background-color: #c9d0ed"
         );
+
+        Timer timer = new Timer();
+        top.getChildren().add(timer);
 
         FlowPane center = new FlowPane();
 
@@ -31,11 +37,29 @@ public class GameWindow extends Stage {
                         "-fx-border-color: #2851f9"
         );
 
+        // 获取第一个点击的 block 位置,并初始化
+        center.setOnMousePressed(e-> {
+            if (!isInit){
+                for (int i = 0; i < blocks.length; i++) {
+                    for (int j = 0; j < blocks[0].length; j++) {
+                        if (blocks[i][j].isPress()) {
+                            int initPos = (i - 1) * mapWidth + (j - 1);
+                            System.out.println(initPos);
+                            initMap(blocks, initPos);
+                            isInit = true;
+                            return;
+                        }
+                    }
+                }
+            }
+        });
+
+        // 根据难度初始化地图参数
         switch (difficulty){
             case "初级":
                 mapWidth = 8;
                 mapHeight = 8;
-                numOfBomb = 10;
+                numOfBomb = 63;
                 break;
             case "中级":
                 mapWidth = 16;
@@ -52,7 +76,7 @@ public class GameWindow extends Stage {
         int height = calculateHeight(mapHeight);
         center.setMaxWidth(mapWidth * GameBlock.edgeLength + 6);
         center.setMinHeight(mapWidth * GameBlock.edgeLength + 6);
-        GameBlock[][] blocks = new GameBlock[mapHeight + 2][mapWidth + 2];
+        blocks = new GameBlock[mapHeight + 2][mapWidth + 2];
 
         for (int i = 0; i < blocks.length; i++) {
             for (int j = 0; j < blocks[i].length; j++) {
@@ -63,8 +87,6 @@ public class GameWindow extends Stage {
                 }
             }
         }
-
-        initMap(blocks);
 
         gameRoot.setAlignment(Pos.TOP_CENTER);
         gameRoot.getChildren().addAll(top, center);
@@ -83,14 +105,14 @@ public class GameWindow extends Stage {
     private static int calculateHeight (int height) {
         return GameBlock.edgeLength*(height+5);
     }
-    public void initMap(GameBlock[][] blocks){
+    public void initMap(GameBlock[][] blocks, int initPos){
         Random random = new Random();
         List<Integer> bombIndexes = new ArrayList<>();
 
         // 随机生成地雷位置
         while (bombIndexes.size() < numOfBomb) {
             int index = random.nextInt(mapWidth * mapHeight);
-            if (!bombIndexes.contains(index)) {
+            if (!bombIndexes.contains(index) && index != initPos) {
                 bombIndexes.add(index);
             }
         }
@@ -111,5 +133,4 @@ public class GameWindow extends Stage {
             }
         }
     }
-
 }
