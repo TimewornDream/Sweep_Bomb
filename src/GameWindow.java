@@ -60,13 +60,15 @@ public class GameWindow extends Stage {
 
         // 计时器
         Timer timer = new Timer();
-        topBox.getChildren().addAll(timer);
-
 
         // 计数器
         Counter counter = new Counter(numOfBomb);
-        topBox.getChildren().addAll(counter);
 
+        // 中间的按钮
+        FireflyButton fireflyButton = new FireflyButton();
+
+        topBox.getChildren().addAll(counter, fireflyButton, timer);
+        topBox.setSpacing(50);
         topBox.setAlignment(Pos.CENTER);
         top.setCenter(topBox);
 

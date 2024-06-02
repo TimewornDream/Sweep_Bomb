@@ -33,9 +33,10 @@ public class Timer extends HBox {
         this.setMinWidth(26.25*3+6);
         this.setStyle(
                 "-fx-border-width: 3;" +
-                        "-fx-border-color: #b4c6b0;" +
+                        "-fx-border-color: #8ca386;" +
                         "-fx-border-radius: 6;" +
-                        "-fx-padding: 2"
+                        "-fx-padding: 2;" +
+                        "-fx-border-style: dotted"
         );
 
     }
@@ -54,7 +55,7 @@ public class Timer extends HBox {
     private ImageView getImageByType (int type) {
         Image img = switch (type) {
             case 1 -> new Image("./img/" + second / 100 + ".png");
-            case 2 -> new Image("./img/" + (second / 10 - second / 100) + ".png");
+            case 2 -> new Image("./img/" + (second % 100 - second % 10) / 10 + ".png");
             case 3 -> new Image("./img/" + second % 10 + ".png");
             default -> new Image("./img/0.png");
         };

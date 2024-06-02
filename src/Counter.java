@@ -13,9 +13,10 @@ public class Counter extends HBox {
         this.setMinWidth(26.25*3+6);
         this.setStyle(
                 "-fx-border-width: 3;" +
-                        "-fx-border-color: #b4c6b0;" +
+                        "-fx-border-color: #8ca386;" +
                         "-fx-border-radius: 6;" +
-                        "-fx-padding: 2"
+                        "-fx-padding: 2;" +
+                        "-fx-border-style: dotted"
         );
 
         this.updateImage();
