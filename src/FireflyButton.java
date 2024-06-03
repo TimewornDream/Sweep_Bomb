@@ -1,7 +1,7 @@
 import javafx.scene.control.Button;
 
 public class FireflyButton extends Button {
-    private int status = 0;
+    private static int status = 0;
     FireflyButton(){
         super();
         this.setMinWidth(74);
@@ -14,7 +14,7 @@ public class FireflyButton extends Button {
             this.setInitStyle();
         });
     }
-    private void setInitStyle(){
+    public void setInitStyle(){
         this.setStyle(
                 getStyleLineWithType(0) +
                         "-fx-background-size: cover;" +
@@ -22,7 +22,7 @@ public class FireflyButton extends Button {
                         "-fx-border-width: 2"
         );
     }
-    private void setClickedStyle(){
+    public void setClickedStyle(){
         this.setStyle(
                 getStyleLineWithType(1) +
                         "-fx-background-size: cover;" +
@@ -46,5 +46,13 @@ public class FireflyButton extends Button {
             case 3 -> "-fx-background-image: url(./img/firefly_lose" + end;
             default -> "err";
         };
+    }
+
+    public static int getStatus() {
+        return status;
+    }
+
+    public static void setStatus(int s) {
+        s = status;
     }
 }

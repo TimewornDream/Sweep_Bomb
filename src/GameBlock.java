@@ -1,8 +1,7 @@
-import javafx.scene.image.ImageView;
+import javafx.scene.control.Button;
 import javafx.scene.input.MouseButton;
-import javafx.scene.layout.StackPane;
 
-public class GameBlock extends StackPane {
+public class GameBlock extends Button {
     public static int edgeLength = 40;
     private int status = 0;
     private boolean isPress = false;
@@ -11,32 +10,20 @@ public class GameBlock extends StackPane {
     GameBlock() {
         super();
         this.setMaxSize(edgeLength, edgeLength);
+        this.setMinSize(edgeLength, edgeLength);
 
-        ImageView block = new ImageView("./img/block.png");
-        block.setFitWidth(edgeLength);
-        block.setFitHeight(edgeLength);
-        ImageView flag = new ImageView("./img/block_flag.png");
-        flag.setFitWidth(edgeLength);
-        flag.setFitHeight(edgeLength);
-        ImageView doubt = new ImageView("./img/block_doubt.png");
-        doubt.setFitWidth(edgeLength);
-        doubt.setFitHeight(edgeLength);
-        ImageView press = new ImageView("./img/press_block.png");
-        press.setFitWidth(edgeLength);
-        press.setFitHeight(edgeLength);
-        ImageView empty = new ImageView("./img/empty_block.png");
-        empty.setFitHeight(edgeLength);
-        empty.setFitWidth(edgeLength);
+        String flag = "-fx-background-image: url(./img/block_flag.png);";
+        String doubt = "-fx-background-image: url(./img/block_doubt.png);";
+        String press = "-fx-background-image: url(./img/block_press.png);";
 
-        this.getChildren().add(block);
+        this.setBlockStyle();
 
         // block 右键变换图像
         this.setOnMouseClicked(e -> {
             if (e.getButton() == MouseButton.SECONDARY && !isPress) {
-                this.getChildren().clear();
                 switch (status) {
                     case 0:
-                        this.getChildren().add(flag);
+                        this.setBlockStyle(flag);
                         status = 1;
 
                         // 计数器数据域改变
@@ -47,7 +34,7 @@ public class GameBlock extends StackPane {
 
                         break;
                     case 1:
-                        this.getChildren().add(doubt);
+                        this.setBlockStyle(doubt);
                         status = 2;
 
                         // 计数器数据域改变
@@ -57,35 +44,34 @@ public class GameBlock extends StackPane {
                         }
                         break;
                     case 2:
-                        this.getChildren().add(block);
+                        this.setBlockStyle();
                         status = 0;
                         break;
                 }
-                this.getChildren().get(0).setOpacity(0.8);
+                this.setOpacity(0.6);
             }
         });
 
         // block 悬停变换透明度
         this.setOnMouseEntered(e -> {
             if (!isPress) {
-                this.getChildren().get(0).setOpacity(0.6);
+                this.setOpacity(0.6);
             }
         });
 
         this.setOnMouseExited(e -> {
             if (!isPress) {
-                this.getChildren().get(0).setOpacity(1.8);
+                this.setOpacity(1.8);
             } else if (status == 0) {
-                this.getChildren().clear();
-                this.getChildren().add(this.getImageWithType());
+                this.setBlockStyle();
             }
         });
 
         // block 按下变换图像
         this.setOnMousePressed(e -> {
             if (status == 0 && !isPress && e.getButton() == MouseButton.PRIMARY) {
-                this.getChildren().clear();
-                this.getChildren().add(press);
+                this.setBlockStyle(press);
+                this.setOpacity(1.8);
                 isPress = true;
             } else if (status != 0 && !isPress && e.getButton() == MouseButton.PRIMARY) {
                 if (status == 1) {
@@ -94,18 +80,17 @@ public class GameBlock extends StackPane {
                     if (this.type == 9) {
                         Counter.numOfRemainingBomb++;
                     }
+                    System.out.println(Counter.userRemainingBomb);
                 }
                 status = 0;
-                this.getChildren().clear();
-                this.getChildren().add(block);
+                this.setBlockStyle();
             }
         });
 
         // block 按下后松开变换图像
-        this.setOnMouseMoved(e -> {
+        this.setOnMouseReleased(e -> {
             if (status == 0 && isPress) {
-                this.getChildren().clear();
-                this.getChildren().add(this.getImageWithType());
+                this.setBlockStyle();
             }
         });
     }
@@ -118,23 +103,37 @@ public class GameBlock extends StackPane {
         this.type = type;
     }
 
-    public ImageView getImageWithType() {
-        ImageView imageView = switch (type) {
-            case 0 -> new ImageView("./img/empty_block.png");
-            case 1 -> new ImageView("./img/block_1.png");
-            case 2 -> new ImageView("./img/block_2.png");
-            case 3 -> new ImageView("./img/block_3.png");
-            case 4 -> new ImageView("./img/block_4.png");
-            case 5 -> new ImageView("./img/block_5.png");
-            case 6 -> new ImageView("./img/block_6.png");
-            case 7 -> new ImageView("./img/block_7.png");
-            case 8 -> new ImageView("./img/block_8.png");
-            case 9 -> new ImageView("./img/block_bomb.png");
-            default -> new ImageView();
+    public String getStyleLineWithType() {
+        if (!isPress){
+            return "-fx-background-image: url(./img/block.png);";
+        }
+        return switch (type) {
+            case 0 -> "-fx-background-image: url(./img/empty_block.png);";
+            case 1 -> "-fx-background-image: url(./img/block_1.png);";
+            case 2 -> "-fx-background-image: url(./img/block_2.png);";
+            case 3 -> "-fx-background-image: url(./img/block_3.png);";
+            case 4 -> "-fx-background-image: url(./img/block_4.png);";
+            case 5 -> "-fx-background-image: url(./img/block_5.png);";
+            case 6 -> "-fx-background-image: url(./img/block_6.png);";
+            case 7 -> "-fx-background-image: url(./img/block_7.png);";
+            case 8 -> "-fx-background-image: url(./img/block_8.png);";
+            case 9 -> "-fx-background-image: url(./img/block_bomb.png);";
+            default -> "";
         };
-        imageView.setFitWidth(edgeLength);
-        imageView.setFitHeight(edgeLength);
-        return imageView;
+    }
+
+    private void setBlockStyle(){
+        this.setStyle(
+                getStyleLineWithType() +
+                        "-fx-background-size: cover"
+        );
+    }
+
+    private void setBlockStyle(String line){
+        this.setStyle(
+                line +
+                        "-fx-background-size: cover"
+        );
     }
 
     public boolean isPress() {

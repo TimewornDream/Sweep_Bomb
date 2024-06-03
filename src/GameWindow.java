@@ -81,26 +81,19 @@ public class GameWindow extends Stage {
                         "-fx-border-color: #2851f9"
         );
 
-        // 获取第一个点击的 block 位置,并初始化,并开始计时
+        // 获取第一个点击的 block 位置,并初始化,并开始计时;如果是单击左键，按钮更新
         center.setOnMousePressed(e-> {
-            if (!isInit){
-                for (int i = 0; i < blocks.length; i++) {
-                    for (int j = 0; j < blocks[0].length; j++) {
-                        if (blocks[i][j].isPress()) {
-                            int initPos = (i - 1) * mapWidth + (j - 1);
-                            initMap(blocks, initPos);
-                            isInit = true;
-                            timer.start();
-                            return;
-                        }
-                    }
-                }
-            }
-            counter.updateImage();
+
         });
 
-        // 如果有 block 被点击，更新计数器
-        center.setOnMouseClicked(e-> counter.updateImage());
+        // 松开恢复按钮样式
+        center.setOnMouseMoved(e->{
+            fireflyButton.setInitStyle();
+        });
+        center.setOnMouseExited(e->{
+            fireflyButton.setInitStyle();
+        });
+
 
         // 初始化地图大小
         int width = calculateWidth(mapWidth);
@@ -112,6 +105,25 @@ public class GameWindow extends Stage {
         for (int i = 0; i < blocks.length; i++) {
             for (int j = 0; j < blocks[i].length; j++) {
                 GameBlock block = new GameBlock(); // 创建GameBlock对象
+
+                // 绑定点击事件
+                block.setOnMouseClicked(e->{
+                    if (!isInit){
+                        for (int i1 = 0; i1 < blocks.length; i1++) {
+                            for (int j1 = 0; j1 < blocks[0].length; j1++) {
+                                if (blocks[i1][j1].isPress()) {
+                                    int initPos = (i1 - 1) * mapWidth + (j1 - 1);
+                                    initMap(blocks, initPos);
+                                    isInit = true;
+                                    timer.start();
+                                    return;
+                                }
+                            }
+                        }
+                    }
+                    counter.updateImage();
+                });
+                
                 blocks[i][j] = block; // 将GameBlock对象添加到blocks数组
                 if(i >= 1 && i <= mapHeight && j >= 1 && j <= mapWidth) {
                     center.getChildren().add(block);
