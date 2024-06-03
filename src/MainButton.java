@@ -2,15 +2,19 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
-public class MainButton extends Button {
-    private Integer mapWidth;
-    private Integer mapHeight;
+import java.util.Objects;
 
-    MainButton (String content, Integer mapWidth, Integer mapHeight) {
+public class MainButton extends Button {
+
+    MainButton (String content) {
         super(content);
-        this.mapHeight = mapHeight;
-        this.mapWidth = mapWidth;
         this.setOnAction(e -> {
+            if(Objects.equals(content, "退出")){
+                Stage mainWindow = (Stage) this.getScene().getWindow();
+                mainWindow.close();
+                return;
+            }
+
             Image icon = new Image("./img/bomb.png");
 
             GameWindow gameWindow = new GameWindow(this.getText());
@@ -21,30 +25,6 @@ public class MainButton extends Button {
             Stage mainWindow = (Stage) this.getScene().getWindow();
             mainWindow.close();
         });
-    }
-
-    MainButton (String content) {
-        super(content);
-        this.setOnAction(e -> {
-            Stage mainWindow = (Stage) this.getScene().getWindow();
-            mainWindow.close();
-        });
-    }
-
-    public Integer getMapHeight() {
-        return mapHeight;
-    }
-
-    public Integer getMapWidth() {
-        return mapWidth;
-    }
-
-    public void setMapHeight(Integer mapHeight) {
-        this.mapHeight = mapHeight;
-    }
-
-    public void setMapWidth(Integer mapWidth) {
-        this.mapWidth = mapWidth;
     }
 
     public void initStyle() {

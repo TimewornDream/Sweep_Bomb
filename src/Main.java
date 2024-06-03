@@ -56,9 +56,9 @@ public class Main extends Application {
         circle3.setTranslateY(200);
 
         // 中间四个个按钮
-        MainButton junButton = new MainButton("初级", 240, 240);
-        MainButton midButton = new MainButton("中级", 480, 480);
-        MainButton senButton = new MainButton("高级", 900, 480);
+        MainButton junButton = new MainButton("初级");
+        MainButton midButton = new MainButton("中级");
+        MainButton senButton = new MainButton("高级");
         MainButton exitButton = new MainButton("退出");
 
         junButton.initStyle();

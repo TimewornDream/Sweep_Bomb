@@ -1,4 +1,5 @@
 import javafx.scene.control.Button;
+import javafx.scene.input.MouseButton;
 
 public class FireflyButton extends Button {
     private int status = 0;
@@ -8,11 +9,11 @@ public class FireflyButton extends Button {
         this.setMaxHeight(74);
         this.setInitStyle();
         this.setOnMousePressed(e->{
-            this.setClickedStyle();
+            if(e.getButton() == MouseButton.PRIMARY){
+                this.setClickedStyle();
+            }
         });
-        this.setOnMouseReleased(e->{
-            this.setInitStyle();
-        });
+        this.setOnMouseReleased(e-> this.setInitStyle());
     }
     public void setInitStyle(){
         this.setStyle(
