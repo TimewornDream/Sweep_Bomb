@@ -7,13 +7,17 @@ import javafx.scene.input.MouseEvent;
 public class GameBlock extends Button {
     public static int edgeLength = 40;
     private int status = 0;
-    private boolean isPress = false;
+    private boolean isUnfold = false;
     private int type = 0;
+    private final int row;
+    private final int column;
 
-    GameBlock() {
+    GameBlock(int row, int column) {
         super();
         this.setMaxSize(edgeLength, edgeLength);
         this.setMinSize(edgeLength, edgeLength);
+        this.row = row;
+        this.column = column;
 
         String flag = "-fx-background-image: url(./img/block_flag.png);";
         String doubt = "-fx-background-image: url(./img/block_doubt.png);";
@@ -23,7 +27,7 @@ public class GameBlock extends Button {
 
         // block 右键变换图像
         this.setOnMouseClicked(e -> {
-            if (e.getButton() == MouseButton.SECONDARY && !isPress) {
+            if (e.getButton() == MouseButton.SECONDARY && !isUnfold) {
                 switch (status) {
                     case 0:
                         this.setBlockStyle(flag);
@@ -57,24 +61,23 @@ public class GameBlock extends Button {
 
         // block 悬停变换透明度
         this.setOnMouseEntered(e -> {
-            if (!isPress) {
+            if (!isUnfold) {
                 this.setOpacity(0.6);
             }
         });
 
         this.setOnMouseExited(e -> {
-            if (!isPress) {
+            if (!isUnfold) {
                 this.setOpacity(1.8);
             }
         });
 
         // block 按下变换图像
         this.setOnMousePressed(e -> {
-            if (status == 0 && !isPress && e.getButton() == MouseButton.PRIMARY) {
+            if (status == 0 && !isUnfold && e.getButton() == MouseButton.PRIMARY) {
                 this.setBlockStyle(press);
                 this.setOpacity(1.8);
-                isPress = true;
-            } else if (status != 0 && !isPress && e.getButton() == MouseButton.PRIMARY) {
+            } else if (status != 0 && !isUnfold && e.getButton() == MouseButton.PRIMARY) {
                 if (status == 1) {
                     // 计数器数据域改变
                     Counter.userRemainingBomb++;
@@ -90,9 +93,14 @@ public class GameBlock extends Button {
 
         // block 按下后松开变换图像
         this.setOnMouseReleased(e -> {
-            if (status == 0 && isPress) {
+            if (status == 0 && !isUnfold) {
+                if (type == 0) {
+                    this.emptyBlockUnfold();
+                    return;
+                }
+                isUnfold = true;
                 this.setBlockStyle();
-                isPress = true;
+
             }
         });
     }
@@ -106,7 +114,7 @@ public class GameBlock extends Button {
     }
 
     public String getStyleLineWithType() {
-        if (!isPress){
+        if (!isUnfold){
             return "-fx-background-image: url(./img/block.png);";
         }
         return switch (type) {
@@ -139,7 +147,7 @@ public class GameBlock extends Button {
     }
 
     public boolean isPress() {
-        return isPress;
+        return isUnfold;
     }
 
     public void addAdditionalMouseClickedHandler(EventHandler<MouseEvent> handler) {
@@ -173,5 +181,31 @@ public class GameBlock extends Button {
             // 调用原始处理器
             originalHandler.handle(e);
         });
+    }
+
+    // 空白块连锁展开
+    private void emptyBlockUnfold (){
+        this.isUnfold = true;
+        this.setBlockStyle();
+        for(int i = -1; i <= 1; i++) {
+            for (int j = -1; j <= 1; j++) {
+                GameBlock block = GameWindow.blocks[row+i][column+j];
+
+                if(block.type == 0 && !block.isUnfold) {
+                    block.isUnfold = true;
+                    block.emptyBlockUnfold();
+                }
+                block.isUnfold = true;
+                block.setBlockStyle();
+            }
+        }
+    }
+
+    public int getRow() {
+        return row;
+    }
+
+    public int getColumn() {
+        return column;
     }
 }

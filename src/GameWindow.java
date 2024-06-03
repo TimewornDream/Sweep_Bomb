@@ -16,7 +16,7 @@ public class GameWindow extends Stage {
     private int numOfBomb;
     private int mapWidth;
     private int mapHeight;
-    private static GameBlock[][] blocks;
+    public static GameBlock[][] blocks;
     public GameWindow(String difficulty) {
         // 根据难度初始化地图参数
         switch (difficulty){
@@ -85,36 +85,38 @@ public class GameWindow extends Stage {
         // 初始化地图大小
         int width = calculateWidth(mapWidth);
         int height = calculateHeight(mapHeight);
-        center.setMaxWidth(mapWidth * GameBlock.edgeLength + 6);
-        center.setMinHeight(mapWidth * GameBlock.edgeLength + 6);
+        int centerWidth = mapWidth * GameBlock.edgeLength + 6;
+        int centerHeight = mapHeight * GameBlock.edgeLength + 6;
+        center.setMaxSize(centerWidth, centerHeight);
+        center.setMinSize(centerWidth, centerHeight);
         blocks = new GameBlock[mapHeight + 2][mapWidth + 2];
 
         for (int i = 0; i < blocks.length; i++) {
             for (int j = 0; j < blocks[i].length; j++) {
-                GameBlock block = new GameBlock(); // 创建GameBlock对象
+                GameBlock block = new GameBlock(i, j); // 创建GameBlock对象
 
                 // 绑定点击事件
                 block.addAdditionalMouseClickedHandler(e->{
-                    // 如果是第一次点击，初始化地图
-                    if (!isInit && e.getButton() == MouseButton.PRIMARY){
-                        for (int i1 = 0; i1 < blocks.length; i1++) {
-                            for (int j1 = 0; j1 < blocks[0].length; j1++) {
-                                if (blocks[i1][j1].isPress()) {
-                                    int initPos = (i1 - 1) * mapWidth + (j1 - 1);
-                                    initMap(blocks, initPos);
-                                    isInit = true;
-                                    timer.start();
-                                    return;
-                                }
-                            }
-                        }
-                    }
+                    System.out.println("[Event]click(" + block.getRow() + ", " + block.getColumn() + ")");
                     // 只要点击，就更新计数器
                     counter.updateImage();
                 });
 
                 // 按住更新上方按钮样式
                 block.addAdditionalMousePressedHandler(e->{
+                    System.out.println("[Event]Press(" + block.getRow() + ", " + block.getColumn() + ")");
+                    // 如果是第一次点击，初始化地图
+                    if (!isInit && e.getButton() == MouseButton.PRIMARY){
+                        int initPos = (block.getRow() - 1) * mapWidth + (block.getColumn() - 1);
+                        initMap(blocks, initPos);
+                        for(int ii = 0; ii < blocks.length; ii++) {
+                            for (int ji = 0; ji < blocks[0].length; ji++) {
+                                System.out.print(blocks[ii][ji].getType()+" ");
+                            }
+                            System.out.println();
+                        }
+                        isInit = true;
+                    }
                     if (e.getButton() == MouseButton.PRIMARY && !block.isPress()){
                         fireflyButton.setStatus(1);
                         fireflyButton.setInitStyle();
@@ -123,6 +125,7 @@ public class GameWindow extends Stage {
 
                 // 松开还原上方按钮样式
                 block.addAdditionalMouseReleasedHandler(e->{
+                    System.out.println("[Event]release(" + block.getRow() + ", " + block.getColumn() + ")");
                     if (e.getButton() == MouseButton.PRIMARY){
                         fireflyButton.setStatus(0);
                         fireflyButton.setInitStyle();
@@ -147,16 +150,32 @@ public class GameWindow extends Stage {
         this.setScene(gameScene);
     }
 
-    private static int calculateWidth (int width) {
-        return GameBlock.edgeLength*(width+4);
+    private static int calculateWidth(int width) {
+        return GameBlock.edgeLength * (width + 4);
     }
 
-    private static int calculateHeight (int height) {
-        return GameBlock.edgeLength*(height+5);
+    private static int calculateHeight(int height) {
+        return GameBlock.edgeLength * (height + 5);
     }
-    public void initMap(GameBlock[][] blocks, int initPos){
+
+    public void initMap(GameBlock[][] blocks, int initPos) {
+        System.out.println("Init Gaming!");
         Random random = new Random();
         List<Integer> bombIndexes = new ArrayList<>();
+
+        // 地图外边界设置为 10；
+        for (GameBlock block: blocks[0]) {
+            block.setType(10);
+        }
+        for (GameBlock block: blocks[blocks.length-1]) {
+            block.setType(10);
+        }
+        for (int i = 1; i < mapHeight + 1; i++) {
+            blocks[i][0].setType(10);
+        }
+        for (int i = 1; i < mapHeight + 1; i++) {
+            blocks[i][blocks.length-1].setType(10);
+        }
 
         // 随机生成地雷位置
         while (bombIndexes.size() < numOfBomb) {
@@ -181,5 +200,6 @@ public class GameWindow extends Stage {
                 }
             }
         }
+
     }
 }
