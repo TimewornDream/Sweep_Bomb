@@ -77,7 +77,20 @@ public class GameBlock extends Button {
             if (status == 0 && !isUnfold && e.getButton() == MouseButton.PRIMARY) {
                 this.setBlockStyle(press);
                 this.setOpacity(1.8);
-            } else if (status != 0 && !isUnfold && e.getButton() == MouseButton.PRIMARY) {
+            }
+        });
+
+        // block 按下后松开变换图像
+        this.setOnMouseReleased(e -> {
+            if (status == 0 && !isUnfold && e.getButton() == MouseButton.PRIMARY) {
+                if (type == 0) {
+                    this.emptyBlockUnfold();
+                    return;
+                }
+                isUnfold = true;
+                this.setBlockStyle();
+            }
+            if (status != 0 && !isUnfold && e.getButton() == MouseButton.PRIMARY) {
                 if (status == 1) {
                     // 计数器数据域改变
                     Counter.userRemainingBomb++;
@@ -88,19 +101,6 @@ public class GameBlock extends Button {
                 }
                 status = 0;
                 this.setBlockStyle();
-            }
-        });
-
-        // block 按下后松开变换图像
-        this.setOnMouseReleased(e -> {
-            if (status == 0 && !isUnfold) {
-                if (type == 0) {
-                    this.emptyBlockUnfold();
-                    return;
-                }
-                isUnfold = true;
-                this.setBlockStyle();
-
             }
         });
     }
