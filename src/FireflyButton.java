@@ -1,7 +1,7 @@
 import javafx.scene.control.Button;
 
 public class FireflyButton extends Button {
-    private static int status = 0;
+    private int status = 0;
     FireflyButton(){
         super();
         this.setMinWidth(74);
@@ -48,11 +48,11 @@ public class FireflyButton extends Button {
         };
     }
 
-    public static int getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public static void setStatus(int s) {
-        s = status;
+    public void setStatus(int status) {
+        this.status = status;
     }
 }

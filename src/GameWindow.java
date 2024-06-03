@@ -1,5 +1,6 @@
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
@@ -81,20 +82,6 @@ public class GameWindow extends Stage {
                         "-fx-border-color: #2851f9"
         );
 
-        // 获取第一个点击的 block 位置,并初始化,并开始计时;如果是单击左键，按钮更新
-        center.setOnMousePressed(e-> {
-
-        });
-
-        // 松开恢复按钮样式
-        center.setOnMouseMoved(e->{
-            fireflyButton.setInitStyle();
-        });
-        center.setOnMouseExited(e->{
-            fireflyButton.setInitStyle();
-        });
-
-
         // 初始化地图大小
         int width = calculateWidth(mapWidth);
         int height = calculateHeight(mapHeight);
@@ -107,8 +94,9 @@ public class GameWindow extends Stage {
                 GameBlock block = new GameBlock(); // 创建GameBlock对象
 
                 // 绑定点击事件
-                block.setOnMouseClicked(e->{
-                    if (!isInit){
+                block.addAdditionalMouseClickedHandler(e->{
+                    // 如果是第一次点击，初始化地图
+                    if (!isInit && e.getButton() == MouseButton.PRIMARY){
                         for (int i1 = 0; i1 < blocks.length; i1++) {
                             for (int j1 = 0; j1 < blocks[0].length; j1++) {
                                 if (blocks[i1][j1].isPress()) {
@@ -121,9 +109,26 @@ public class GameWindow extends Stage {
                             }
                         }
                     }
+                    // 只要点击，就更新计数器
                     counter.updateImage();
                 });
-                
+
+                // 按住更新上方按钮样式
+                block.addAdditionalMousePressedHandler(e->{
+                    if (e.getButton() == MouseButton.PRIMARY && !block.isPress()){
+                        fireflyButton.setStatus(1);
+                        fireflyButton.setInitStyle();
+                    }
+                });
+
+                // 松开还原上方按钮样式
+                block.addAdditionalMouseReleasedHandler(e->{
+                    if (e.getButton() == MouseButton.PRIMARY){
+                        fireflyButton.setStatus(0);
+                        fireflyButton.setInitStyle();
+                    }
+                });
+
                 blocks[i][j] = block; // 将GameBlock对象添加到blocks数组
                 if(i >= 1 && i <= mapHeight && j >= 1 && j <= mapWidth) {
                     center.getChildren().add(block);

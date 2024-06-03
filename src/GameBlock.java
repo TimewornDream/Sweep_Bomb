@@ -1,6 +1,9 @@
+import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 
+@SuppressWarnings("unchecked")
 public class GameBlock extends Button {
     public static int edgeLength = 40;
     private int status = 0;
@@ -62,8 +65,6 @@ public class GameBlock extends Button {
         this.setOnMouseExited(e -> {
             if (!isPress) {
                 this.setOpacity(1.8);
-            } else if (status == 0) {
-                this.setBlockStyle();
             }
         });
 
@@ -91,6 +92,7 @@ public class GameBlock extends Button {
         this.setOnMouseReleased(e -> {
             if (status == 0 && isPress) {
                 this.setBlockStyle();
+                isPress = true;
             }
         });
     }
@@ -138,5 +140,38 @@ public class GameBlock extends Button {
 
     public boolean isPress() {
         return isPress;
+    }
+
+    public void addAdditionalMouseClickedHandler(EventHandler<MouseEvent> handler) {
+        EventHandler<MouseEvent>originalHandler = (EventHandler<MouseEvent>) this.getOnMouseClicked();
+        this.setOnMouseClicked(e-> {
+            // 调用新增的处理器
+            handler.handle(e);
+
+            // 调用原始处理器
+            originalHandler.handle(e);
+        });
+    }
+
+    public void addAdditionalMousePressedHandler(EventHandler<MouseEvent> handler) {
+        EventHandler<MouseEvent>originalHandler = (EventHandler<MouseEvent>) this.getOnMousePressed();
+        this.setOnMousePressed(e-> {
+            // 调用新增的处理器
+            handler.handle(e);
+
+            // 调用原始处理器
+            originalHandler.handle(e);
+        });
+    }
+
+    public void addAdditionalMouseReleasedHandler(EventHandler<MouseEvent> handler) {
+        EventHandler<MouseEvent>originalHandler = (EventHandler<MouseEvent>) this.getOnMouseReleased();
+        this.setOnMouseReleased(e-> {
+            // 调用新增的处理器
+            handler.handle(e);
+
+            // 调用原始处理器
+            originalHandler.handle(e);
+        });
     }
 }
