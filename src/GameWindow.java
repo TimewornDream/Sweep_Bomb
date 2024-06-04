@@ -69,7 +69,7 @@ public class GameWindow extends Stage {
         FireflyButton fireflyButton = new FireflyButton();
         fireflyButton.setOnMouseReleased(e-> {
             fireflyButton.setInitStyle();
-            this.resetGame(counter, timer);
+            this.resetGame(counter, timer, fireflyButton);
         });
 
         topBox.getChildren().addAll(counter, fireflyButton, timer);
@@ -105,7 +105,7 @@ public class GameWindow extends Stage {
                     System.out.println("[Event]click(" + block.getRow() + ", " + block.getColumn() + ")");
                     // 只要点击，就更新计数器
                     counter.updateImage();
-                    System.out.printf("剩余格数：%d，剩余炸弹：%d\n", GameBlock.numberOfBlockNotUnfolded, Counter.numOfRemainingBomb);
+                    
                     // 判断为赢
                     if (((Counter.numOfRemainingBomb == 0 && Counter.userRemainingBomb == 0)
                             || GameBlock.numberOfBlockNotUnfolded == numOfBomb)) {
@@ -236,12 +236,15 @@ public class GameWindow extends Stage {
         }
     }
 
-    public void resetGame (Counter counter, Timer timer) {
+    public void resetGame (Counter counter, Timer timer, FireflyButton fireflyButton) {
         this.isInit = false;
         GameBlock.numberOfBlockNotUnfolded = mapHeight*mapWidth;
 
         counter.reset(numOfBomb);
         timer.reset();
+
+        fireflyButton.setStatus(0);
+        fireflyButton.setInitStyle();
 
         for (int i = 0; i < blocks.length; i++){
             for (int j = 0; j < blocks[0].length; j++) {
