@@ -108,7 +108,7 @@ public class GameWindow extends Stage {
                     System.out.printf("剩余格数：%d，剩余炸弹：%d\n", GameBlock.numberOfBlockNotUnfolded, Counter.numOfRemainingBomb);
                     // 判断为赢
                     if (((Counter.numOfRemainingBomb == 0 && Counter.userRemainingBomb == 0)
-                            || GameBlock.numberOfBlockNotUnfolded == Counter.numOfRemainingBomb)) {
+                            || GameBlock.numberOfBlockNotUnfolded == numOfBomb)) {
                         fireflyButton.setStatus(2);
                         fireflyButton.setInitStyle();
                         setButtonDisable();
