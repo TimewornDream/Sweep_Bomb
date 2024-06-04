@@ -37,4 +37,10 @@ public class Counter extends HBox {
         imageView.setFitWidth(26.25);
         return imageView;
     }
+
+    public void reset(int initNumOfBomb) {
+        numOfRemainingBomb = initNumOfBomb;
+        userRemainingBomb = initNumOfBomb;
+        updateImage();
+    }
 }

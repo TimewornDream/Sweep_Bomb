@@ -51,6 +51,16 @@ public class Timer extends HBox {
         clock.play();
     }
 
+    public void stop(){
+        clock.stop();
+    }
+
+    public void reset(){
+        second = 0;
+        this.getChildren().clear();
+        this.getChildren().addAll(getImageByType(1), getImageByType(2), getImageByType(3));
+    }
+
     // type 表示时间位数，1为百位，2为十位，3为个位
     private ImageView getImageByType (int type) {
         Image img = switch (type) {

@@ -211,6 +211,14 @@ public class GameBlock extends Button {
             }
         }
     }
+    public void reset(){
+        type = 0;
+        status = 0;
+        isUnfold = false;
+        this.setDisable(false);
+        this.setBlockStyle();
+        this.setOpacity(1.8);
+    }
 
     public int getRow() {
         return row;

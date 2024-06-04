@@ -13,7 +13,6 @@ public class FireflyButton extends Button {
                 this.setClickedStyle();
             }
         });
-        this.setOnMouseReleased(e-> this.setInitStyle());
     }
     public void setInitStyle(){
         this.setStyle(

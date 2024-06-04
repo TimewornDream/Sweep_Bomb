@@ -67,6 +67,10 @@ public class GameWindow extends Stage {
 
         // 中间的按钮
         FireflyButton fireflyButton = new FireflyButton();
+        fireflyButton.setOnMouseReleased(e-> {
+            fireflyButton.setInitStyle();
+            this.resetGame(counter, timer);
+        });
 
         topBox.getChildren().addAll(counter, fireflyButton, timer);
         topBox.setSpacing(50);
@@ -101,7 +105,6 @@ public class GameWindow extends Stage {
                     System.out.println("[Event]click(" + block.getRow() + ", " + block.getColumn() + ")");
                     // 只要点击，就更新计数器
                     counter.updateImage();
-
                     System.out.printf("剩余格数：%d，剩余炸弹：%d\n", GameBlock.numberOfBlockNotUnfolded, Counter.numOfRemainingBomb);
                     // 判断为赢
                     if (((Counter.numOfRemainingBomb == 0 && Counter.userRemainingBomb == 0)
@@ -109,6 +112,7 @@ public class GameWindow extends Stage {
                         fireflyButton.setStatus(2);
                         fireflyButton.setInitStyle();
                         setButtonDisable();
+                        timer.stop();
                         System.out.println("----win----");
                     }
                 });
@@ -116,7 +120,7 @@ public class GameWindow extends Stage {
                 // 按住更新上方按钮样式
                 block.addAdditionalMousePressedHandler(e->{
                     System.out.println("[Event]Press(" + block.getRow() + ", " + block.getColumn() + ")");
-                    // 如果是第一次点击，初始化地图
+                    // 如果是第一次点击，初始化地图，并开始计时
                     if (!isInit && e.getButton() == MouseButton.PRIMARY){
                         int initPos = (block.getRow() - 1) * mapWidth + (block.getColumn() - 1);
                         initMap(blocks, initPos);
@@ -127,6 +131,7 @@ public class GameWindow extends Stage {
                             System.out.println();
                         }
                         isInit = true;
+                        timer.start();
                     }
                     if (e.getButton() == MouseButton.PRIMARY && !block.isPress()){
                         fireflyButton.setStatus(1);
@@ -147,6 +152,7 @@ public class GameWindow extends Stage {
                         fireflyButton.setStatus(3);
                         fireflyButton.setInitStyle();
                         setButtonDisable();
+                        timer.stop();
                         System.out.println("----lose----");
                     }
                 });
@@ -226,6 +232,20 @@ public class GameWindow extends Stage {
             for (int j = 0; j < blocks[0].length; j++) {
                 blocks[i][j].setDisable(true);
                 blocks[i][j].setOpacity(1.8);
+            }
+        }
+    }
+
+    public void resetGame (Counter counter, Timer timer) {
+        this.isInit = false;
+        GameBlock.numberOfBlockNotUnfolded = mapHeight*mapWidth;
+
+        counter.reset(numOfBomb);
+        timer.reset();
+
+        for (int i = 0; i < blocks.length; i++){
+            for (int j = 0; j < blocks[0].length; j++) {
+                blocks[i][j].reset();
             }
         }
     }
