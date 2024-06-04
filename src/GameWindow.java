@@ -101,14 +101,8 @@ public class GameWindow extends Stage {
                     // 只要点击，就更新计数器
                     counter.updateImage();
 
-                    // 点击到炸弹，判定为输
-                    if (block.getType() == 9) {
-                        fireflyButton.setStatus(3);
-                        fireflyButton.setInitStyle();
-                        setButtonDisable();
-                        System.out.println("----lose----");
-                    }
-                    //
+
+//                    if (Counter.numOfRemainingBomb == 0 && Counter.userRemainingBomb == 0)
                 });
 
                 // 按住更新上方按钮样式
@@ -138,6 +132,13 @@ public class GameWindow extends Stage {
                     if (e.getButton() == MouseButton.PRIMARY){
                         fireflyButton.setStatus(0);
                         fireflyButton.setInitStyle();
+                    }
+                    // 点击到炸弹，判定为输
+                    if (block.getType() == 9 && e.getButton() == MouseButton.PRIMARY) {
+                        fireflyButton.setStatus(3);
+                        fireflyButton.setInitStyle();
+                        setButtonDisable();
+                        System.out.println("----lose----");
                     }
                 });
 
@@ -210,9 +211,7 @@ public class GameWindow extends Stage {
             }
         }
     }
-    public void ifWin(){
 
-    }
     public void setButtonDisable () {
         for (int i = 0; i < blocks.length; i++){
             for (int j = 0; j < blocks[0].length; j++) {

@@ -153,11 +153,11 @@ public class GameBlock extends Button {
     public void addAdditionalMouseClickedHandler(EventHandler<MouseEvent> handler) {
         EventHandler<MouseEvent>originalHandler = (EventHandler<MouseEvent>) this.getOnMouseClicked();
         this.setOnMouseClicked(e-> {
-            // 调用新增的处理器
-            handler.handle(e);
-
             // 调用原始处理器
             originalHandler.handle(e);
+
+            // 调用新增的处理器
+            handler.handle(e);
         });
     }
 
