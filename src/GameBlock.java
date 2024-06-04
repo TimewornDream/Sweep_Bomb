@@ -11,6 +11,7 @@ public class GameBlock extends Button {
     private int type = 0;
     private final int row;
     private final int column;
+    public static int numberOfBlockNotUnfolded;
 
     GameBlock(int row, int column) {
         super();
@@ -85,9 +86,11 @@ public class GameBlock extends Button {
             if (status == 0 && !isUnfold && e.getButton() == MouseButton.PRIMARY) {
                 if (type == 0) {
                     this.emptyBlockUnfold();
+                    GameBlock.updateNotUnfoldedNum();
                     return;
                 }
                 isUnfold = true;
+                numberOfBlockNotUnfolded--;
                 this.setBlockStyle();
             }
             if (status != 0 && !isUnfold && e.getButton() == MouseButton.PRIMARY) {
@@ -185,8 +188,6 @@ public class GameBlock extends Button {
 
     // 空白块连锁展开
     private void emptyBlockUnfold (){
-        this.isUnfold = true;
-        this.setBlockStyle();
         for(int i = -1; i <= 1; i++) {
             for (int j = -1; j <= 1; j++) {
                 GameBlock block = GameWindow.blocks[row+i][column+j];
@@ -197,6 +198,16 @@ public class GameBlock extends Button {
                 }
                 block.isUnfold = true;
                 block.setBlockStyle();
+            }
+        }
+    }
+    public static void updateNotUnfoldedNum(){
+        numberOfBlockNotUnfolded = 0;
+        for (int i = 1; i < GameWindow.blocks.length - 1; i++) {
+            for (int j = 1; j < GameWindow.blocks[0].length - 1; j++) {
+                if (!GameWindow.blocks[i][j].isUnfold) {
+                    numberOfBlockNotUnfolded++;
+                }
             }
         }
     }

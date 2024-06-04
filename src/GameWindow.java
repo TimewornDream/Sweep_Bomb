@@ -23,7 +23,7 @@ public class GameWindow extends Stage {
             case "初级":
                 mapWidth = 8;
                 mapHeight = 8;
-                numOfBomb = 10;
+                numOfBomb = 4;
                 break;
             case "中级":
                 mapWidth = 16;
@@ -90,6 +90,7 @@ public class GameWindow extends Stage {
         center.setMaxSize(centerWidth, centerHeight);
         center.setMinSize(centerWidth, centerHeight);
         blocks = new GameBlock[mapHeight + 2][mapWidth + 2];
+        GameBlock.numberOfBlockNotUnfolded = mapHeight*mapWidth;
 
         for (int i = 0; i < blocks.length; i++) {
             for (int j = 0; j < blocks[i].length; j++) {
@@ -101,8 +102,15 @@ public class GameWindow extends Stage {
                     // 只要点击，就更新计数器
                     counter.updateImage();
 
-
-//                    if (Counter.numOfRemainingBomb == 0 && Counter.userRemainingBomb == 0)
+                    System.out.printf("剩余格数：%d，剩余炸弹：%d\n", GameBlock.numberOfBlockNotUnfolded, Counter.numOfRemainingBomb);
+                    // 判断为赢
+                    if (((Counter.numOfRemainingBomb == 0 && Counter.userRemainingBomb == 0)
+                            || GameBlock.numberOfBlockNotUnfolded == Counter.numOfRemainingBomb)) {
+                        fireflyButton.setStatus(2);
+                        fireflyButton.setInitStyle();
+                        setButtonDisable();
+                        System.out.println("----win----");
+                    }
                 });
 
                 // 按住更新上方按钮样式
@@ -133,6 +141,7 @@ public class GameWindow extends Stage {
                         fireflyButton.setStatus(0);
                         fireflyButton.setInitStyle();
                     }
+
                     // 点击到炸弹，判定为输
                     if (block.getType() == 9 && e.getButton() == MouseButton.PRIMARY) {
                         fireflyButton.setStatus(3);
