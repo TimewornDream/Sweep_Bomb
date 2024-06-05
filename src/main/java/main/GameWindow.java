@@ -204,7 +204,7 @@ public class GameWindow extends Stage {
             blocks[i][0].setType(10);
         }
         for (int i = 1; i < mapHeight + 1; i++) {
-            blocks[i][blocks.length-1].setType(10);
+            blocks[i][blocks[0].length-1].setType(10);
         }
 
         // 随机生成地雷位置
