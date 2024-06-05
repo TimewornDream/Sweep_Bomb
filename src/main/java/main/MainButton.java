@@ -25,12 +25,12 @@ public class MainButton extends Button {
                 ex.printStackTrace();
             }
 
-            GameWindow gameWindow = new GameWindow(this.getText());
+            Stage mainWindow = (Stage) this.getScene().getWindow();
+            GameWindow gameWindow = new GameWindow(this.getText(), mainWindow);
             gameWindow.setTitle("扫雷——"+ this.getText());
             gameWindow.getIcons().add(icon);
             gameWindow.setResizable(false);
             gameWindow.show();
-            Stage mainWindow = (Stage) this.getScene().getWindow();
             mainWindow.close();
         });
     }

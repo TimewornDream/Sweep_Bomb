@@ -19,7 +19,7 @@ public class GameWindow extends Stage {
     private int mapWidth;
     private int mapHeight;
     public static GameBlock[][] blocks;
-    public GameWindow(String difficulty) {
+    public GameWindow(String difficulty, Stage mainwindow) {
         // 根据难度初始化地图参数
         switch (difficulty){
             case "初级":
@@ -175,6 +175,9 @@ public class GameWindow extends Stage {
 
         Scene gameScene = new Scene(gameRoot, width, height);
         this.setScene(gameScene);
+
+        // 绑定关闭事件，关闭回到主界面
+        this.setOnCloseRequest(e-> mainwindow.show());
     }
 
     private static int calculateWidth(int width) {
